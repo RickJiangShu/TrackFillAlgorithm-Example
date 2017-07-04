@@ -1,31 +1,35 @@
-﻿/*
- * Author:  Rick
- * Create:  7/3/2017 9:40:04 PM
- * Email:   rickjiangshu@gmail.com
- * Follow:  https://github.com/RickJiangShu
- */
+﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-/// <summary>
-/// Main
-/// 定义：
-/// Tile        格子脚本
-/// TileMap     格子地图脚本
-/// Grid        格子数据
-/// GridMap     格子数据地图
-/// 
-/// Ground      地盘
-/// Track       轨迹
-/// Tracker     地图上的玩家对象
-/// 
-/// </summary>
 public class Main : MonoBehaviour
 {
+    public static Main ins;
+
+
+    //Unity 
+    public Canvas m_Canvas;
+    public Map m_Map;
+
+	public Action appLunchAction;
+	public Action gameStartAction;
+	public Action gameOverAction;
+
     // Use this for initialization
+    void Awake()
+    {
+        ins = this;
+
+    }
+
     void Start()
     {
+        Application.targetFrameRate = 60;//所有平台都设为60帧
+
+		if(appLunchAction!=null)
+			appLunchAction.Invoke();
+
+		StartGame();
 
     }
 
@@ -34,4 +38,32 @@ public class Main : MonoBehaviour
     {
 
     }
+
+
+    public static void StartGame()
+    {
+        ins.m_Map.gameObject.SetActive(true);
+
+		ResetCamera();
+
+        if (!ins.m_Map.gameStarted)
+            ins.m_Map.Enter();
+        else
+        {
+            ins.m_Map.ChangeTrackerName(Map.ins.m_Player.name, "");
+			ins.m_Map.m_Player.Job = 0;
+            ins.m_Map.PlayerReborn();
+        }
+
+		if(ins.gameStartAction!=null)
+			ins.gameStartAction.Invoke();
+			
+    }
+
+	//TODO: 可移动至Camera控制类中
+	public static void ResetCamera()
+	{
+		Camera.main.orthographicSize=9f;
+	}
+
 }
