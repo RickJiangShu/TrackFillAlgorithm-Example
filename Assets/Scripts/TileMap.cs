@@ -13,36 +13,45 @@ using UnityEngine;
 /// </summary>
 public class TileMap : MonoBehaviour
 {
-    public static Vector2 TilePixel = new Vector2(0.8f, 0.8f);
+    public static TileMap ins;
+    public static Vector2 tilePixel = new Vector2(0.8f, 0.8f);
 
     public int width;
     public int height;
     public GameObject tilePref;
+
+    public Grid[,] gridMap;//格子地图
     
     void Awake()
     {
+        ins = this;
     }
 
     // Use this for initialization
     void Start()
     {
-        float wx = width * TilePixel.x * 0.5f;
-        float wy = height * TilePixel.y * 0.5f;
+        gridMap = new Grid[width, height];
+
+        float wx = width * tilePixel.x * 0.5f;
+        float wy = height * tilePixel.y * 0.5f;
 
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                GameObject tile = GameObject.Instantiate(tilePref);
-                tile.transform.parent = transform;
-                tile.transform.position = new Vector3(-wx + x * TilePixel.x, wy + -y * TilePixel.y, 0f);
+                Grid grid = new Grid();
+                grid.x = x;
+                grid.y = y;
+                grid.flag = 0;
+                gridMap[x, y] = grid;
+
+                GameObject tileGO = GameObject.Instantiate(tilePref);
+                tileGO.transform.parent = transform;
+                tileGO.transform.position = new Vector3(-wx + x * tilePixel.x, wy + -y * tilePixel.y, 0f);
+                Tile tile = tileGO.AddComponent<Tile>();
+                tile.grid = grid;
             }
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

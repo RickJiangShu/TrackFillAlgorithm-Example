@@ -19,15 +19,15 @@ public class TileLines : MonoBehaviour
     {
         tileMap = GetComponent<TileMap>();
 
-        float rx = TileMap.TilePixel.x * 0.5f + tileMap.width * TileMap.TilePixel.x * 0.5f;
-        float ry = TileMap.TilePixel.y * 0.5f + tileMap.height * TileMap.TilePixel.y * 0.5f;
+        float rx = TileMap.tilePixel.x * 0.5f + tileMap.width * TileMap.tilePixel.x * 0.5f;
+        float ry = TileMap.tilePixel.y * 0.5f + tileMap.height * TileMap.tilePixel.y * 0.5f;
 
-        float right = -rx + tileMap.width * TileMap.TilePixel.x;
-        float bottom = ry + tileMap.height * TileMap.TilePixel.y * -1f;
+        float right = -rx + tileMap.width * TileMap.tilePixel.x;
+        float bottom = ry + tileMap.height * TileMap.tilePixel.y * -1f;
         ///列
         for (int col = 0; col <= tileMap.width; col++)
         {
-            float x = -rx + col * TileMap.TilePixel.x;
+            float x = -rx + col * TileMap.tilePixel.x;
             Vector3 start = new Vector3(x, ry, -1f);
             Vector3 end = new Vector3(x, bottom, -1f);
             DrawLine(start, end, Color.red);
@@ -36,7 +36,7 @@ public class TileLines : MonoBehaviour
         //行
         for (int row = 0; row <= tileMap.height; row++)
         {
-            float y = ry + row * TileMap.TilePixel.y * -1f;
+            float y = ry + row * TileMap.tilePixel.y * -1f;
             Vector3 start = new Vector3(-rx, y, -1f);
             Vector3 end = new Vector3(right, y, -1f);
             DrawLine(start, end, Color.red);
